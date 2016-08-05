@@ -1,0 +1,39 @@
+{
+  "name": "gulp-rev-hash2",
+  "version": "1.0.2",
+  "description": "Appends a file's hash to a file URL to cache assets in any file (html, templates)",
+  "main": "index.js",
+  "dependencies": {
+    "gulp-util": "~2.2.14",
+    "through2": "~0.4.1"
+  },
+  "devDependencies": {
+    "event-stream": "~3.1.0",
+    "gulp": "~3.5.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://gitlab.futunn.com/webpackage/gulp-rev-hash2.git"
+  },
+  "keywords": [
+    "gulpplugin",
+    "js",
+    "javascript",
+    "asset",
+    "caching",
+    "rev",
+    "md5",
+    "hash"
+  ],
+  "author": "alanzhang <alanzhang@futunn.com>",
+  "license": "ISC",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
