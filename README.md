@@ -1,7 +1,12 @@
 # futu-gulp-rev
 =============
 
-正则匹配出html文件中的css和js路径，根据其文件内容计算出hash值作为版本号.
+正则匹配出html文件中的css和js路径，根据其文件内容计算出hash值作为版本号.如：
+```
+<!-- rev-hash -->
+<link rel="stylesheet" href="main.min.css?v=9d58b7441d92130f545778e418d1317d">
+<!-- end -->
+```
 
 > 由于项目打包需求，在已有npm gulp-rev-hash 组件基础上进行了扩展和优化！
 > Fork 至 https://github.com/outluch/gulp-rev-hash.git
