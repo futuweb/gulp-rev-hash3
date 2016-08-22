@@ -28,10 +28,10 @@ module.exports = function(options) {
         endReg   = /<!--\s*end\s*-->/gim;
 
     // js的正则匹配，仅匹配出js路径，不包括参数
-    var jsReg  = /<\s*script\s+.*?src\s*=\s*"([^"]+.js).*".*?><\s*\/\s*script\s*>/gi;
+    var jsReg = /<\s*script\s+.*?src\s*=\s*(?:'|")([^"']+.js).*(?:'|").*?><\s*\/\s*script\s*>/gi;
 
     // css的正则匹配，仅匹配出css路径，不包括参数
-    var cssReg = /<\s*link\s+.*?href\s*=\s*"([^"]+.css).*".*?>/gi;
+    var cssReg = /<\s*link\s+.*?href\s*=\s*(?:'|")([^"]+.css).*(?:'|").*?>/gi;
 
     // 是否指定了域名的本地路径
     var hasRemotePath,
@@ -52,7 +52,10 @@ module.exports = function(options) {
         content
             .replace(/<!--(?:(?:.|\r|\n)*?)-->/gim, '')
             .replace(reg, function(a, b) {
-                paths.push(b);
+                paths.push({
+                    path:b,
+                    tag:a
+                });
             });
 
         return paths;
@@ -70,15 +73,15 @@ module.exports = function(options) {
         domainPathMap = domainPathMap || {};
 
         // 包含domain 和 path的json数组
-        options.remotePath = options.remotePath || options.remotepath ||[];
+        options.remotePath = options.remotePath || options.remotepath || [];
 
         // 资源文件目录的路径，node在读取静态文件时，会在文件路径前加上assetsDir
-        options.assetsDir  = options.assetsDir ? options.assetsDir : '';
+        options.assetsDir = options.assetsDir ? options.assetsDir : '';
 
-        hasRemotePath  = options.remotePath instanceof Array  && options.remotePath.length > 0;
+        hasRemotePath = options.remotePath instanceof Array && options.remotePath.length > 0;
 
         for (var i = 0, domainLength = options.remotePath.length; i < domainLength; i++) {
-            domainPathMap[options.remotePath[i].domain] = path.join(rootPath,options.remotePath[i].path);
+            domainPathMap[options.remotePath[i].domain] = path.join(rootPath, options.remotePath[i].path);
         }
 
     })();
@@ -106,7 +109,7 @@ module.exports = function(options) {
                 if (index_ > -1) {
 
                     // 将domain对应的路径与 静态资源文件的路径进行拼接，组成一个本地路径共fs进行读取
-                    tempPath = path.join(domainPathMap[domain] ,filepath.substr(index_ + domainStr.length + 1) );
+                    tempPath = path.join(domainPathMap[domain], filepath.substr(index_ + domainStr.length + 1));
                     // console.log(filepath + " ===> "+ tempPath);
                     return tempPath;
                 }
@@ -177,7 +180,7 @@ module.exports = function(options) {
                     for (var j = 0; j < assets.length; j++) {
                         asset = assets[j];
 
-                        var tempPath =  filterRemotePath(asset);
+                        var tempPath = filterRemotePath(asset.path);
 
                         // 读取本地文件，根据其文件内容计算hash值
                         var hash = require('crypto')
@@ -188,9 +191,20 @@ module.exports = function(options) {
                             .digest("hex");
 
                         if (type === 'css') {
-                            html.push('<link rel="stylesheet" href="' + asset + '?v=' + hash + '"/>\r\n');
+                            html.push('<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '"/>\r\n');
                         } else {
-                            html.push('<script src="' + asset + '?v=' + hash + '"></script>\r\n');
+
+                            // 仅仅只替换掉src部分，其他部分保留
+                            var tag = asset.tag.replace(/src\s*=\s*(?:'|")([^"']+.js)[^'"]*(?:'|")/gi, function(tag, src) {
+
+                                if (src.length > 0) {
+                                    return 'src="' + src + '?v=' + hash + '"';
+                                } else {
+                                    return 'src="' + src + '"';
+                                }
+                            });
+
+                            html.push(tag+'\r\n');
                         }
 
                     }

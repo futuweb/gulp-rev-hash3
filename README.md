@@ -1,4 +1,4 @@
-# futu-gulp-rev
+# gulp-rev-hash2
 =============
 
 正则匹配出html文件中的css和js路径，根据其文件内容计算出hash值作为版本号.如：
@@ -10,6 +10,11 @@
 
 > 由于项目打包需求，在已有npm gulp-rev-hash 组件基础上进行了扩展和优化！
 > Fork 至 https://github.com/outluch/gulp-rev-hash.git
+
+## 改进
+1. 为js，css加上文件hash值作为版本号，对cdn引用的文件仍然可以进行计算hash值；
+2. 保留script标签中的其他属性值不改变；
+3. 兼容src和href的单引号和双引号包裹；
 
 ## 安装
 
@@ -37,7 +42,7 @@ npm install git+https://github.com/AlanZhang001/gulp-rev-hash2.git
 
 ```js
 var gulp = require('gulp');
-var revHash = require('futu-gulp-rev');
+var revHash = require('gulp-rev-hash2');
 
 gulp.task('rev-hash', function () {
     gulp.src('test/*.html')
@@ -76,8 +81,8 @@ gulp.task('rev-hash', function () {
 
 ### 静态文件为CDN或者域 的方式（CDN对应目录必须为当前项目可访问的目录）
 
-在demo项目中，以futu-gulp-rev为项目目录，以gulpfile为基准，则项目的目录为"./"，假设需要配置域名cdn.xxxx.com 对应 test目录，则对应的域名配置为
-```	
+在demo项目中，以gulp-rev-hash2为项目目录，以gulpfile为基准，则项目的目录为"./"，假设需要配置域名cdn.xxxx.com 对应 test目录，则对应的域名配置为
+```
 {
     domain:"cdn.xxxx.com",
     path:"test"
@@ -121,7 +126,7 @@ gulp.task('test', function() {
 <!-- end -->
 ```
 
-#### Output 
+#### Output
 
 ```
 <!-- rev-hash -->
