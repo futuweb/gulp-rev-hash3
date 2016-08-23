@@ -49,12 +49,13 @@ module.exports = function(options) {
         var paths = [];
 
         // 去掉注释部分，提取出js或者css路径
+        // 保存完整的script标签和link标签以做备用
         content
             .replace(/<!--(?:(?:.|\r|\n)*?)-->/gim, '')
             .replace(reg, function(a, b) {
                 paths.push({
-                    path:b,
-                    tag:a
+                    path:b, // 路径
+                    tag:a   // 完整标签
                 });
             });
 
@@ -67,13 +68,13 @@ module.exports = function(options) {
      */
     (function (){
 
-        // 项目的根路径，先对与gulpfile.js的路径
+        // 项目的根路径，相对与gulpfile.js的路径
         var rootPath = path.resolve(options.projectPath || "../");
 
         domainPathMap = domainPathMap || {};
 
         // 包含domain 和 path的json数组
-        options.remotePath = options.remotePath || options.remotepath || [];
+        options.remotePath = options.remotePath || [];
 
         // 资源文件目录的路径，node在读取静态文件时，会在文件路径前加上assetsDir
         options.assetsDir = options.assetsDir ? options.assetsDir : '';
@@ -164,7 +165,7 @@ module.exports = function(options) {
                     html.push(section[0]);
                     html.push('<!-- rev-hash -->\r\n')
 
-                     // 取<!-- rev-hash -->前面的空格或tab作为缩进
+                    // 取<!-- rev-hash -->前面的空格或tab作为缩进
                     var indentMatch = section[0] && section[0].match(/( *|\t*)$/);
                     var indent      = indentMatch && indentMatch[1];
 
@@ -174,10 +175,10 @@ module.exports = function(options) {
 
                     if (cssAssets.length > 0) {
                         assets = cssAssets;
-                        type = 'css'
+                        type   = 'css'
                     } else {
                         assets = jsAssets;
-                        type = 'js'
+                        type   = 'js'
                     }
 
                     // 针对js或者css路径集合进行文件读取并计算hash

@@ -1,1 +1,1 @@
-console.log('File ABC test');
+console.log('File ABC');
