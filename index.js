@@ -28,10 +28,10 @@ module.exports = function(options) {
         endReg   = /<!--\s*end\s*-->/gim;
 
     // js的正则匹配，仅匹配出js路径，不包括参数
-    var jsReg = /<\s*script\s+.*?src\s*=\s*(?:'|")([^"']+.js).*(?:'|").*?><\s*\/\s*script\s*>/gi;
+    var jsReg = /<\s*script\s+.*?src\s*=\s*(?:'|")([^"']+.js).*(?:'|").*?>\s*<\s*\/\s*script\s*>/gi;
 
     // css的正则匹配，仅匹配出css路径，不包括参数
-    var cssReg = /<\s*link\s+.*?href\s*=\s*(?:'|")([^"]+.css).*(?:'|").*?>/gi;
+    var cssReg = /<\s*link\s+.*?href\s*=\s*(?:'|")([^"']+.css).*(?:'|").*?>/gi;
 
     // 是否指定了域名的本地路径
     var hasRemotePath,
@@ -66,7 +66,7 @@ module.exports = function(options) {
      * [初始化参数，指定domain与路径的映射]
      * @return {[type]} [description]
      */
-    (function (){
+    (function() {
 
         // 项目的根路径，相对与gulpfile.js的路径
         var rootPath = path.resolve(options.projectPath || "../");
@@ -201,12 +201,7 @@ module.exports = function(options) {
 
                             // 仅仅只替换掉src部分，其他属性部分保留
                             var tag = asset.tag.replace(/src\s*=\s*(?:'|")([^"']+.js)[^'"]*(?:'|")/gi, function(tag, src) {
-
-                                if (src.length > 0) {
-                                    return 'src="' + src + '?v=' + hash + '"';
-                                } else {
-                                    return 'src="' + src + '"';
-                                }
+                                return 'src="' + src + '?v=' + hash + '"';
                             });
 
                             html.push(indent + tag+'\r\n');
