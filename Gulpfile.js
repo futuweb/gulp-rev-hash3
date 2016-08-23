@@ -13,3 +13,4 @@ gulp.task('test', function() {
         }))
         .pipe(gulp.dest('test'));
 });
+gulp.task('default', ["test"]);

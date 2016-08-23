@@ -164,6 +164,10 @@ module.exports = function(options) {
                     html.push(section[0]);
                     html.push('<!-- rev-hash -->\r\n')
 
+                     // 取<!-- rev-hash -->前面的空格或tab作为缩进
+                    var indentMatch = section[0] && section[0].match(/( *|\t*)$/);
+                    var indent      = indentMatch && indentMatch[1];
+
                     // section[1]为<!-- rev-hash -->和<!-- end -->包含的部分
                     var cssAssets = getFiles(section[1], cssReg);
                     var jsAssets  = getFiles(section[1], jsReg);
@@ -191,10 +195,10 @@ module.exports = function(options) {
                             .digest("hex");
 
                         if (type === 'css') {
-                            html.push('<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '"/>\r\n');
+                            html.push(indent + '<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '"/>\r\n');
                         } else {
 
-                            // 仅仅只替换掉src部分，其他部分保留
+                            // 仅仅只替换掉src部分，其他属性部分保留
                             var tag = asset.tag.replace(/src\s*=\s*(?:'|")([^"']+.js)[^'"]*(?:'|")/gi, function(tag, src) {
 
                                 if (src.length > 0) {
@@ -204,11 +208,11 @@ module.exports = function(options) {
                                 }
                             });
 
-                            html.push(tag+'\r\n');
+                            html.push(indent + tag+'\r\n');
                         }
 
                     }
-                    html.push('<!-- end -->');
+                    html.push(indent + '<!-- end -->');
 
                 } else {
                     html.push(sections[i]);
