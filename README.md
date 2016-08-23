@@ -19,7 +19,7 @@
 ## 安装
 
 ```
-npm install git+https://github.com/AlanZhang001/gulp-rev-hash3.git
+npm install gulp-rev-hash3
 ```
 
 ## 原理

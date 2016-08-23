@@ -1,6 +1,6 @@
 {
   "name": "gulp-rev-hash3",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Appends a file's hash to a file URL to cache assets in any file (html, templates)",
   "main": "index.js",
   "dependencies": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://gitlab.futunn.com/webpackage/gulp-rev-hash2.git"
+    "url": "https://github.com/AlanZhang001/gulp-rev-hash3.git"
   },
   "keywords": [
     "gulpplugin",
