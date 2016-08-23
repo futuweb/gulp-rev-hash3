@@ -1,4 +1,4 @@
-# gulp-rev-hash2
+# gulp-rev-hash3
 =============
 
 正则匹配出html文件中的css和js路径，根据其文件内容计算出hash值作为版本号.如：
@@ -19,7 +19,7 @@
 ## 安装
 
 ```
-npm install git+https://github.com/AlanZhang001/gulp-rev-hash2.git
+npm install git+https://github.com/AlanZhang001/gulp-rev-hash3.git
 ```
 
 ## 原理
@@ -42,7 +42,7 @@ npm install git+https://github.com/AlanZhang001/gulp-rev-hash2.git
 
 ```js
 var gulp = require('gulp');
-var revHash = require('gulp-rev-hash2');
+var revHash = require('gulp-rev-hash3');
 
 gulp.task('rev-hash', function () {
     gulp.src('test/*.html')
@@ -81,7 +81,7 @@ gulp.task('rev-hash', function () {
 
 ### 静态文件为CDN或者域 的方式（CDN对应目录必须为当前项目可访问的目录）
 
-在demo项目中，以gulp-rev-hash2为项目目录，以gulpfile为基准，则项目的目录为"./"，假设需要配置域名cdn.xxxx.com 对应 test目录，则对应的域名配置为
+在demo项目中，以gulp-rev-hash3为项目目录，以gulpfile为基准，则项目的目录为"./"，假设需要配置域名cdn.xxxx.com 对应 test目录，则对应的域名配置为
 ```
 {
     domain:"cdn.xxxx.com",
