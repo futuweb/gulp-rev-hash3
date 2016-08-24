@@ -37,7 +37,10 @@ module.exports = function(options) {
     var hasRemotePath,
 
     // {domain:path}格式
-        domainPathMap;
+        domainPathMap,
+
+    // 换行符的类型，根据用户使用的换行符类判断拼接的时候使用哪种换行符
+        newLineSymbol;
 
     /**
      * [getFiles 根据正则表达式提取出js或者css路径]
@@ -155,15 +158,26 @@ module.exports = function(options) {
          */
         } else {
 
-            var html = [];
-            var sections = String(file.contents).split(endReg);
+            var html = [],
+                content = String(file.contents),
+                sections = content.split(endReg);
+
+            index = 0;
+            // 判断当前文件中使用的换行符
+            if (content.indexOf('\r\n') > -1) {
+                newLineSymbol = '\r\n';
+            } else if (content.indexOf('\n') > -1) {
+                newLineSymbol = '\n';
+            } else if (content.indexOf('\r') > -1) {
+                newLineSymbol = "\r;
+            }
 
             for (var i = 0, l = sections.length; i < l; ++i) {
                 if (sections[i].match(startReg)) {
                     var assets, type;
                     var section = sections[i].split(startReg);
                     html.push(section[0]);
-                    html.push('<!-- rev-hash -->\r\n')
+                    html.push('<!-- rev-hash -->' + newLineSymbol);
 
                     // 取<!-- rev-hash -->前面的空格或tab作为缩进
                     var indentMatch = section[0] && section[0].match(/( *|\t*)$/);
@@ -196,7 +210,7 @@ module.exports = function(options) {
                             .digest("hex");
 
                         if (type === 'css') {
-                            html.push(indent + '<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '"/>\r\n');
+                            html.push(indent + '<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '">' + newLineSymbol);
                         } else {
 
                             // 仅仅只替换掉src部分，其他属性部分保留
@@ -204,7 +218,7 @@ module.exports = function(options) {
                                 return 'src="' + src + '?v=' + hash + '"';
                             });
 
-                            html.push(indent + tag+'\r\n');
+                            html.push(indent + tag + newLineSymbol);
                         }
 
                     }
