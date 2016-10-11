@@ -46,7 +46,7 @@ var gulp = require('gulp');
 var revHash = require('gulp-rev-hash3');
 
 gulp.task('rev-hash', function () {
-    gulp.src('test/*.html')
+    return gulp.src('test/*.html')
         .pipe(revHash({
 			assetsDir: 'test',
 		}))
@@ -99,7 +99,7 @@ var gulp = require('gulp');
 var rev = require('./index');
 
 gulp.task('test', function() {
-    gulp.src('test/*.html')
+    return gulp.src('test/*.html')
         .pipe(rev({
             assetsDir: 'test',
             remotePath:[{
@@ -166,3 +166,26 @@ projectPath:"./"
 
 由于计算hash值需要能读取让node读取到其二进制文件，需保证以当前gulpfile所在目录为起点能访问到需要加版本号的静态资源文件（css,js）;
 
+## 版本
+
+### 1.0.6
+1. 根据项目中使用的换行符类型，来决定组装内容时应该使用的换行符。
+2. 在gulp配置中加入return，解决与其他task使用时冲突问题。
+
+### 1.0.5
+1. 兼容包裹路径的单引号双引号；
+2. 保留script标签的其他属性
+
+### 1.0.4
+1. 修正一部分代码缩进问题
+2. 加版本号时保持原有html缩进
+
+### 1.0.3
+去掉冗余兼容
+
+### 1.0.2 
+1. 发布版本及文档
+2. 添加cdn的配置
+
+### 1.0.1 
+初次发布版本
