@@ -169,7 +169,7 @@ module.exports = function(options) {
             } else if (content.indexOf('\n') > -1) {
                 newLineSymbol = '\n';
             } else if (content.indexOf('\r') > -1) {
-                newLineSymbol = "\r;
+                newLineSymbol = '\r';
             }
 
             for (var i = 0, l = sections.length; i < l; ++i) {
