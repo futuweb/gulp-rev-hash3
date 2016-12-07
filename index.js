@@ -121,11 +121,11 @@ module.exports = function(options) {
             }
 
             // 未匹配到路径中使用的cdn
-            return path.join(options.assetsDir, filepath);
+            return path.resolve(options.assetsDir, filepath);
         }
 
         // gulpfile中未对此组件设置域名配置
-        return path.join(options.assetsDir, filepath);
+        return path.resolve(options.assetsDir, filepath);
     }
 
     /**
