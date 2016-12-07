@@ -90,12 +90,17 @@ module.exports = function(options) {
 
     })();
 
+    function isRelativePath(filepath) {
+        return /^(\.|\.\.)/.test(filepath);
+    }
+
     /**
      * [filterRemotePath 根据静态资源的路径匹配出在本地的路径;如果使用了cdn则替换成本地路径，否则返回相对路径]
      * @param  {String} filepath [静态资源的路径]
+     * @param  {String} htmlpath [当前处理的html资源的路径，用于处理引用的静态资源时相对资源的情况]
      * @return {string}          [description]
      */
-    function filterRemotePath(filepath) {
+    function filterRemotePath(filepath,htmlpath) {
 
         if (hasRemotePath) {
             var domainStr = "",
@@ -121,11 +126,16 @@ module.exports = function(options) {
             }
 
             // 未匹配到路径中使用的cdn
-            return path.join(options.assetsDir, filepath);
+            // 如果使用的是相对路径,则根据先对于html的路径拿到引用资源的绝对路径即可
+            return isRelativePath(filepath) ? path.join(htmlpath, filepath) :
+                                              path.join(options.assetsDir, filepath);
+
         }
 
         // gulpfile中未对此组件设置域名配置
-        return path.join(options.assetsDir, filepath);
+        // 如果使用的是相对路径,则根据先对于html的路径拿到引用资源的绝对路径即可
+        return isRelativePath(filepath) ? path.join(htmlpath, filepath) :
+                                          path.join(options.assetsDir, filepath);
     }
 
     /**
@@ -160,9 +170,9 @@ module.exports = function(options) {
 
             var html = [],
                 content = String(file.contents),
-                sections = content.split(endReg);
+                sections = content.split(endReg),
+                htmlpath = path.dirname(file.path);
 
-            index = 0;
             // 判断当前文件中使用的换行符
             if (content.indexOf('\r\n') > -1) {
                 newLineSymbol = '\r\n';
@@ -189,17 +199,17 @@ module.exports = function(options) {
 
                     if (cssAssets.length > 0) {
                         assets = cssAssets;
-                        type   = 'css'
+                        type   = 'css';
                     } else {
                         assets = jsAssets;
-                        type   = 'js'
+                        type   = 'js';
                     }
 
                     // 针对js或者css路径集合进行文件读取并计算hash
                     for (var j = 0; j < assets.length; j++) {
                         asset = assets[j];
 
-                        var tempPath = filterRemotePath(asset.path);
+                        var tempPath = filterRemotePath(asset.path,htmlpath);
 
                         // 读取本地文件，根据其文件内容计算hash值
                         var hash = require('crypto')

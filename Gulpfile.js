@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var rev = require('./index');
 
 gulp.task('test', function() {
-    return gulp.src('test/*.html')
+    return gulp.src('test/**/*.html')
         .pipe(rev({
             assetsDir: 'test',
             remotePath:[{
