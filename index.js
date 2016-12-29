@@ -156,7 +156,7 @@ module.exports = function(options) {
         // 插件不支持对 Stream 直接操作，跑出异常
         } else if (file.isStream()) {
 
-            this.emit('error', new gutil.PluginError('gulp-usemin', 'Streams are not supported!'));
+            this.emit('error', new gutil.PluginError('futu-gulp-rev', 'Streams are not supported!'));
             callback();
 
         /*
@@ -212,12 +212,17 @@ module.exports = function(options) {
                         var tempPath = filterRemotePath(asset.path,htmlpath);
 
                         // 读取本地文件，根据其文件内容计算hash值
-                        var hash = require('crypto')
-                            .createHash('md5')
-                            .update(fs.readFileSync(tempPath, {
-                                encoding: 'utf8'
-                            }))
-                            .digest("hex");
+                        var hash ='';
+                        try {
+                            hash = require('crypto')
+                                .createHash('md5')
+                                .update(fs.readFileSync(tempPath, {
+                                    encoding: 'utf8'
+                                }))
+                                .digest("hex");
+                        } catch (e) {
+                            throw new Error('Can not find the source file of tag ' + asset.tag + ', current html is ' + file.path);
+                        }
 
                         if (type === 'css') {
                             html.push(indent + '<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '">' + newLineSymbol);
