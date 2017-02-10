@@ -157,10 +157,13 @@ projectPath:"./"
 
 |参数| 说明 | 默认值 |
 |---|---|---|
-|assetsDir|相对于gulpfile文件，html中引用的js，css资源的路径，即以gulpfile所在目录 为起点，assetsDir+script.src能找到对应的js|""|
+|assetsDir| 静态资源文件目录现对于gulpfile的路径，即以gulpfile所在目录 为起点，assetsDir+script.src能找到对应的js；|""|
 |remotePath|域名对应文件目录|无|
 |projectPath | 相对于gulpfile，项目目录地址，或者理解为配置domain path时，path所在目录，即以gulpfile所在目录 为起点，projectPath + domain path +script.src能找到对应的js |../，gulpfile上一级|
 
+> 1. 对于html中通过相对路径引用(`./` 或者`../`)的静态资源,插件会根据html的路径找到具体的静态资源文件。
+> 2. 对于通过`/`方式引用的静态资源`<script src="/def.js">`，组件会根据assetsDir+script.src 的方式去寻找具体的静态资源文件
+> 3. 对于通过cdn应用的静态资源，组件会通过`projectPath + domain path +script.src`的方式去寻找具体的静态资源文件
 
 ## 局限
 

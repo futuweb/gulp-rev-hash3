@@ -126,14 +126,14 @@ module.exports = function(options) {
             }
 
             // 未匹配到路径中使用的cdn
-            // 如果使用的是相对路径,则根据先对于html的路径拿到引用资源的绝对路径即可
+            // 如果使用的是相对路径,则根据相对于html的路径拿到引用资源的绝对路径即可
             return isRelativePath(filepath) ? path.join(htmlpath, filepath) :
                                               path.join(options.assetsDir, filepath);
 
         }
 
         // gulpfile中未对此组件设置域名配置
-        // 如果使用的是相对路径,则根据先对于html的路径拿到引用资源的绝对路径即可
+        // 如果使用的是相对路径,则根据相对于html的路径拿到引用资源的绝对路径即可
         return isRelativePath(filepath) ? path.join(htmlpath, filepath) :
                                           path.join(options.assetsDir, filepath);
     }
