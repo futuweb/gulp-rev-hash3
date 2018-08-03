@@ -225,7 +225,7 @@ module.exports = function(options) {
                         }
 
                         if (type === 'css') {
-                            html.push(indent + '<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '">' + newLineSymbol);
+                            html.push(indent + '<link rel="stylesheet" href="' + asset.path + '?v=' + hash + '"/>' + newLineSymbol);
                         } else {
 
                             // 仅仅只替换掉src部分，其他属性部分保留
