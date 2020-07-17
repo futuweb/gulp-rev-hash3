@@ -8,8 +8,7 @@
  *
  * @原理 ：正则匹配出html文件中的css和js路径，根据其文件内容计算出hash值作为版本号
  *
- * @Link：gitlab:http://gitlab.futunn.com/webpackage/futu-gulp-rev.git
- *        github:https://github.com/outluch/gulp-rev-hash
+ * @Link：github:https://github.com/outluch/gulp-rev-hash
  *
  */
 
